@@ -8,6 +8,7 @@ import java.io.IOException;
  */
 public class ErrorCommand implements Command 
 {
+
   private BufferedWriter out;
   private MsgSvrConnection conn;
   private String message;
