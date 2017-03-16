@@ -1,6 +1,10 @@
 # Compilation Instructions
 
-None yet I don't know  `¯\_(ツ)_/¯` To be discussed
+Entry point: `src/main.java`
+
+To run the server run `src/main.java`
+
+Make sure to link to the correct passwd file
 
 # Coursework Assessment Brief
 
