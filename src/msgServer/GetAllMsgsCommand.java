@@ -40,10 +40,10 @@ public class GetAllMsgsCommand implements Command {
                 //Flush the outputstream
                 out.flush();
             }else{
-                new ErrorCommand(in, out, conn, "No messages");
+                (new ErrorCommand(in, out, conn, "No messages")).execute();
             }
         }else{
-            new ErrorCommand(in, out, conn, "You are not logged on");
+            (new ErrorCommand(in, out, conn, "You are not logged on")).execute();
         }
 
         //capture adequet errors (No messages) or (You are not logged on)
