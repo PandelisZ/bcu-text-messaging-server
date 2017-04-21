@@ -17,7 +17,7 @@ public class MessageServer {
     private Properties userInfo;
     private MessageCollection messages;
     private Database mysqlDatabase = new Database("jdbc:mysql://bcu-texting-coursework-cluster-1.cluster-cueefshnasyf.eu-west-2.rds.amazonaws.com:3306/texting-test",
-                                                 "testing", "ry0RJN7aYL1Q5EB9dmEQpb0");
+                                                 "bcutexting", "7Bfu6sNx28U32vLtOPLQ6QI");
     private boolean verbose;
 
     /**
