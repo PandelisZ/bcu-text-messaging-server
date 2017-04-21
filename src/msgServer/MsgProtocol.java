@@ -47,6 +47,9 @@ public class MsgProtocol {
      * Server reponds by sending all messages for that user
      */
     public static final int GET_ALL_MESSAGES = 106;
+
+
+    public static final int REGISTRATION = 107;
   /* -------------- Responses --------------- */
     /**
      * Server reponds OK
