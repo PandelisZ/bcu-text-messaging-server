@@ -14,10 +14,8 @@ import java.sql.*;
 public class MessageServer {
     public static final int DEFAULT_PORT = 9801;
     private int port;
-    private Properties userInfo;
     private MessageCollection messages;
-    private Database mysqlDatabase = new Database("jdbc:mysql://bcu-texting-coursework-cluster-1.cluster-cueefshnasyf.eu-west-2.rds.amazonaws.com:3306/texting-test",
-                                                 "bcutexting", "7Bfu6sNx28U32vLtOPLQ6QI");
+    private Database mysqlDatabase;
     private boolean verbose;
 
     /**
@@ -29,32 +27,13 @@ public class MessageServer {
     public MessageServer(int portNumber) throws IOException {
         // save the port number
         port = portNumber;
-        // load the user details from the password file
-        // First create a new properties object
-        userInfo = new Properties();
         // set up a FileInputStream which will be used to read in the user details
         FileInputStream fin = null;
         // Construct a new (empty) MessageCollection
         messages = new MessageCollection();
-        try {
-            // Open the file input stream from the password file
-            // See MsgProtocol.java for the actual filename
-            fin = new FileInputStream(MsgProtocol.PASSWORD_FILE);
-            // and load the user details
-            userInfo.load(fin);
-        } catch (IOException e) {
-            // we can't open the password file
-            throw new IOException("Can't open the password file: " +
-                    MsgProtocol.PASSWORD_FILE);
-        } finally {
-            // finished, so close that input file
-            if (fin != null) {
-                try {
-                    fin.close();
-                } catch (IOException e) {
-                }
-            }
-        }
+        // Set up database connection for login and everything else
+        mysqlDatabase = new Database("jdbc:mysql://bcu-texting-coursework-cluster-1.cluster-cueefshnasyf.eu-west-2.rds.amazonaws.com:3306/texting-test",
+                "bcutexting", "7Bfu6sNx28U32vLtOPLQ6QI");
     }
 
     /**
@@ -160,7 +139,15 @@ public class MessageServer {
      * @return String the password of this user
      */
     public String getUserPassword(String user) {
-        return userInfo.getProperty(user);
+        ResultSet rs = mysqlDatabase.executeSQL("SELECT pass from users WHERE user = '" + user + "'");
+        try {
+            if(rs.next()){
+                return rs.getString("pass");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -170,7 +157,15 @@ public class MessageServer {
      * @return boolean True if the user is in the password file, false otherwise
      */
     public boolean isValidUser(String username) {
-        return (userInfo.getProperty(username) != null);
+        ResultSet rs = mysqlDatabase.executeSQL("SELECT user from users WHERE user = '" + username + "'");
+        try {
+            if(rs.next()){
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**

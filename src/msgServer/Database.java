@@ -49,7 +49,6 @@ public class Database {
     public Connection getConnection() {
         try {
             conn = DriverManager.getConnection(dbURI, dbUser, dbPass);
-            System.out.println ("Successfully connected to remote MySQL database");
             return conn;
         } catch (SQLException e) {
             System.out.println("Error reading database");
