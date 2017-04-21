@@ -47,24 +47,11 @@ public class UpdateUser implements Command{
             add = in.readLine();
 
         }
-        sqlUpdateUser =  "UPDATE users SET pass = '"+ password + "', dob = STR_TO_DATE("+dob+", '%y-%m-%d')"+ ", tel = '"+ tel +"', add = '"+add+"' WHERE user = '"+user+"';";
+        sqlUpdateUser =  "UPDATE `users` SET `pass` = '"+ password + "', `dob` = STR_TO_DATE("+dob+", '%Y-%m-%d')"+ ", `tel` = '"+ tel +"', `add` = '"+add+"' WHERE `user` = '"+user+"';";
 
-        /**
-         * @param fileout  used for testing purposes to see if the data can be written to a file and updated.
-         */
-        FileWriter fileout = new FileWriter("registration.txt",true);
-
-        fileout.write(user);
-        fileout.write(password);
-        fileout.write(dob);
-        fileout.write(tel);
-        fileout.write(add);
-        fileout.close();
         conn.getServer().getDatabase().executeSQLUpdate(sqlUpdateUser);
-
-
         out.write("200\r\n");
-
+        out.flush();
 
     }
 
