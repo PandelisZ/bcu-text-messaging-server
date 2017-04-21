@@ -28,6 +28,7 @@ public class Registration implements Command {
         String dob = in.readLine();
         String tel = in.readLine();
         String add = in.readLine();
+        String sqlInsertUser;
 
        FileWriter fileOut = new FileWriter("TestFile1.txt", true);
        fileOut.write(user);
@@ -37,6 +38,13 @@ public class Registration implements Command {
        fileOut.write(add);
 
        fileOut.close();
+
+
+       sqlInsertUser =  "INSERT INTO users (user, pass, dob, tel, add) VALUES ('"+user+"','"+password+"', STR_TO_DATE('+dob+', '%Y-%m-%d'),'"+tel+"','"+add+"')";
+       conn.getServer().isValidUser(user);
+       conn.getServer().getDatabase().executeSQLUpdate(sqlInsertUser);
+
+
 
        out.write("200\r\n");
 
