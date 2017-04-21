@@ -40,13 +40,15 @@ public class Registration implements Command {
        fileOut.close();
 
 
-       sqlInsertUser =  "INSERT INTO users (user, pass, dob, tel, add) VALUES ('"+user+"','"+password+"', STR_TO_DATE('+dob+', '%Y-%m-%d'),'"+tel+"','"+add+"')";
-       conn.getServer().isValidUser(user);
-       conn.getServer().getDatabase().executeSQLUpdate(sqlInsertUser);
 
 
+       if(conn.getServer().isValidUser(user) == false) {
+           sqlInsertUser =  "INSERT INTO users (user, pass, dob, tel, add) VALUES ('"+user+"','"+password+"', STR_TO_DATE('+dob+', '%Y-%m-%d'),'"+tel+"','"+add+"')";
+           conn.getServer().getDatabase().executeSQLUpdate(sqlInsertUser);
+       }
 
        out.write("200\r\n");
+       out.flush();
 
     }
 }
