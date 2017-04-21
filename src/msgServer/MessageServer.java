@@ -36,6 +36,10 @@ public class MessageServer {
                 "bcutexting", "7Bfu6sNx28U32vLtOPLQ6QI");
     }
 
+    public Database getDatabase(){
+        return mysqlDatabase;
+    }
+
     /**
      * Construct a new MessageServer using the default port of 9801
      */
