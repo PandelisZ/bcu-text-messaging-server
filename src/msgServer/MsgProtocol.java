@@ -1,11 +1,6 @@
 package msgServer;
 
 public class MsgProtocol {
-    /*
-     * The location of the password file.
-     */
-    public static final String PASSWORD_FILE = "build/pwd.txt";
-
   /* -------------- Commands --------------- */
     /**
      * client requests to login
