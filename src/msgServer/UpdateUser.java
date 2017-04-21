@@ -47,6 +47,9 @@ public class UpdateUser implements Command{
             add = in.readLine();
 
         }
+        /**
+         * @param sqlUpdateUser forms the sql statement to update a users details
+         */
         sqlUpdateUser =  "UPDATE users SET pass = '"+ password + "', dob = STR_TO_DATE("+dob+", '%y-%m-%d')"+ ", tel = '"+ tel +"', add = '"+add+"' WHERE user = '"+user+"';";
 
         /**
