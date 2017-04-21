@@ -1,10 +1,12 @@
 package msgServer;
 
+import javax.sql.rowset.CachedRowSet;
 import java.util.Properties;
 import java.io.IOException;
 import java.io.FileInputStream;
 import java.net.Socket;
 import java.net.ServerSocket;
+import java.sql.*;
 
 /**
  * A class to model the message server itself
@@ -14,6 +16,8 @@ public class MessageServer {
     private int port;
     private Properties userInfo;
     private MessageCollection messages;
+    private Database mysqlDatabase = new Database("jdbc:mysql://bcu-texting-coursework-cluster-1.cluster-cueefshnasyf.eu-west-2.rds.amazonaws.com:3306/texting-test",
+                                                 "testing", "ry0RJN7aYL1Q5EB9dmEQpb0");
     private boolean verbose;
 
     /**
@@ -102,6 +106,11 @@ public class MessageServer {
             try {
                 if (serverSocket != null) {
                     serverSocket.close();
+                    try {
+                        mysqlDatabase.getConnection().close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
                 }
             } catch (IOException e) {
             }

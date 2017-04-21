@@ -8,41 +8,55 @@ import java.sql.*;
  */
 public class Database {
 
-    final String dbURI = "jdbc:mysql://bcu-texting-coursework-cluster-1.cluster-cueefshnasyf.eu-west-2.rds.amazonaws.com:3306/texting-test";
-    final String dbUser = "testing";
-    final String dbPass = "ry0RJN7aYL1Q5EB9dmEQpb0";
+    //final String dbURI = "jdbc:mysql://bcu-texting-coursework-cluster-1.cluster-cueefshnasyf.eu-west-2.rds.amazonaws.com:3306/texting-test";
+    //final String dbUser = "testing";
+    //final String dbPass = "ry0RJN7aYL1Q5EB9dmEQpb0";
+
+    private final String dbURI;
+    private final String dbUser;
+    private final String dbPass;
+    private Connection conn = null;
 
     /**
      * loaded driver into the memory, so it can be utilized as an implementation of the JDBC interfaces.
      */
-    protected void registerDriver() {
+
+    public Database(String URI, String username, String password){
+        this.dbURI = URI;
+        this.dbUser = username;
+        this.dbPass = password;
+
         try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
+            Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException ex) {
             System.out.println("Error: unable to load driver class!");
             System.exit(1);
         }
     }
 
-    {
-        this.registerDriver();
+    public ResultSet executeSQL(String sql){
+        Connection conn = getConnection();
         try {
-            Connection conn = DriverManager.getConnection(dbURI, dbUser, dbPass);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            return rs;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-
+        return null;
     }
 
-//    protected void finalize() throws Throwable {
-//        try {
-//            this.conn.close(); //Explicitly closing a connection conserves DBMS resources, which will make your database administrator happy.
-//        } finally {
-//            super.finalize();
-//        }
-//    }
-
-
+    public Connection getConnection() {
+        try {
+            conn = DriverManager.getConnection(dbURI, dbUser, dbPass);
+            System.out.println ("Successfully connected to remote MySQL database");
+            return conn;
+        } catch (SQLException e) {
+            System.out.println("Error reading database");
+        }
+        return null;
+    }
 }
+
+
+

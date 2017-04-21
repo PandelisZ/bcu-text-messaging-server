@@ -4,7 +4,7 @@ public class MsgProtocol {
     /*
      * The location of the password file.
      */
-    public static final String PASSWORD_FILE = "/Users/pz/workspace/bcu-text-messaging-server/build/pwd.txt";
+    public static final String PASSWORD_FILE = "build/pwd.txt";
 
   /* -------------- Commands --------------- */
     /**
