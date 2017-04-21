@@ -143,7 +143,7 @@ public class MessageServer {
      * @return String the password of this user
      */
     public String getUserPassword(String user) {
-        ResultSet rs = mysqlDatabase.executeSQL("SELECT pass from users WHERE user = '" + user + "'");
+        ResultSet rs = mysqlDatabase.executeSQLQuery("SELECT pass from users WHERE user = '" + user + "'");
         try {
             if(rs.next()){
                 return rs.getString("pass");
@@ -161,7 +161,7 @@ public class MessageServer {
      * @return boolean True if the user is in the password file, false otherwise
      */
     public boolean isValidUser(String username) {
-        ResultSet rs = mysqlDatabase.executeSQL("SELECT user from users WHERE user = '" + username + "'");
+        ResultSet rs = mysqlDatabase.executeSQLQuery("SELECT user from users WHERE user = '" + username + "'");
         try {
             if(rs.next()){
                 return true;
