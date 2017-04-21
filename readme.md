@@ -24,17 +24,27 @@ implemented
 ### 3. Devise and implement a protocol and command(s) that allows the user to update
 registration details – Not implemented
  (10 Marks)
+ 
 ### 4. Devise and implement a protocol and command(s) that allows the user to set reminders
 for particular event. Users can be notified of reminders by (text message, sound alert or a
 popup window) – Not implemented
  (20 Marks)
+
+Assigned: @PandelisZ
+
 ### 5. Devise and implement a protocol that allows the user to access and update reminders.
 Users can be notified of reminders by (text message, sound alert or a popup window) –
 Not implemented
  (10 Marks)
+ 
+ Assigned: @PandelisZ
+ 
 ### 6. Extend the implementation of the text-messaging server to enable JDBC connection for at
 least two command classes.
  (30 Marks)
+ 
+ Issue: #6
+ Assigned: Team
 
 ### Error handling																																		
 When you design the protocol you need to take into account error messages and
