@@ -42,6 +42,9 @@ public class CommandFactory {
                     return new GetAllMsgsCommand(in, out, serverConn);
                 case MsgProtocol.REGISTRATION: //107
                     return new Registration(in, out, serverConn);
+                case MsgProtocol.UPDATEUSER: //108
+                    return new UpdateUser(in, out, serverConn);
+
 
         /*
 	     * Add more case statements below this comment to process 

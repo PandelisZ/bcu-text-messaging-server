@@ -10,7 +10,7 @@ import java.net.ServerSocket;
  * A class to model the message server itself
  */
 public class MessageServer {
-    public static final int DEFAULT_PORT = 9801;
+    public static final int DEFAULT_PORT = 9802;
     private int port;
     private Properties userInfo;
     private MessageCollection messages;

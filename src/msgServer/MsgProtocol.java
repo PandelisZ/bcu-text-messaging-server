@@ -50,6 +50,8 @@ public class MsgProtocol {
 
 
     public static final int REGISTRATION = 107;
+
+    public static final int UPDATEUSER = 108;
   /* -------------- Responses --------------- */
     /**
      * Server reponds OK
