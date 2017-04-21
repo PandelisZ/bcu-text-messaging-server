@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.*;
 
 /**
  * Created by Jorda on 21/04/2017.
@@ -13,6 +14,8 @@ public class UpdateUser implements Command{
     private BufferedReader in;
     private BufferedWriter out;
     private MsgSvrConnection conn;
+
+
 
 
     public UpdateUser(BufferedReader in, BufferedWriter out, MsgSvrConnection serverConn) {
@@ -31,17 +34,20 @@ public class UpdateUser implements Command{
         String dob = null;
         String tel = null;
         String add = null;
+        String sqlUpdateUser;
         /**
          * checks if the user designed for change is the current user logged in
          * if user  is logged in and selects themself the data can be changed
          */
         if(user != null && user.equals(conn.getCurrentUser())) {
-            user = in.readLine();
+            //user = in.readLine();
             password = in.readLine();
             dob = in.readLine();
             tel = in.readLine();
             add = in.readLine();
+
         }
+        sqlUpdateUser =  "UPDATE users SET pass = '"+ password + "', dob = STR_TO_DATE("+dob+", '%y-%m-%d')"+ ", tel = '"+ tel +"', add = '"+add+"' WHERE user = '"+user+"';";
 
         /**
          * @param fileout  used for testing purposes to see if the data can be written to a file and updated.
@@ -54,6 +60,8 @@ public class UpdateUser implements Command{
         fileout.write(tel);
         fileout.write(add);
         fileout.close();
+        conn.getServer().getDatabase().executeSQLUpdate(sqlUpdateUser);
+
 
         out.write("200\r\n");
 
