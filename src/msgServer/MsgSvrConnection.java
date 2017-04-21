@@ -48,6 +48,9 @@ public class MsgSvrConnection extends Thread {
             writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             // a command class to process the client's command
             Command command = null;
+            // this fixes glitch where writing is invisible to begin with
+            writer.write("\r");
+            writer.flush();
             do {
                 // get the appropriate Command class from the CommandFactory
                 command = CommandFactory.getCommand(reader, writer, this);
