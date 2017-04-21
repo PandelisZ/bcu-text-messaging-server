@@ -34,7 +34,7 @@ public class Database {
         }
     }
 
-    public ResultSet executeSQL(String sql){
+    public ResultSet executeSQLQuery(String sql){
         Connection conn = getConnection();
         try {
             Statement stmt = conn.createStatement();
@@ -44,6 +44,16 @@ public class Database {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void executeSQLUpdate(String sql){
+        Connection conn = getConnection();
+        try {
+            Statement stmt = conn.createStatement();
+            stmt.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public Connection getConnection() {
