@@ -44,6 +44,10 @@ public class CommandFactory {
                     return new Registration(in, out, serverConn);
                 case MsgProtocol.UPDATEUSER: //108
                     return new UpdateUser(in, out, serverConn);
+                case MsgProtocol.SET_REMINDER: //201
+                    return new ReminderCommand(in, out, serverConn);
+                case MsgProtocol.GET_NEXT_REMINDER: //202
+                    return new GetReminderCommand(in, out, serverConn);
 
 
         /*

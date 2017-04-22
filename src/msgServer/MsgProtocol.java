@@ -54,7 +54,7 @@ public class MsgProtocol {
      *  username\r\n
      *  reminder\r\n
      */
-    public static final int SET_REMINDER = 201;
+    public static final int SET_REMINDER = 110;
 
     /**
      *  Client requests to get the next set reminder
@@ -62,7 +62,7 @@ public class MsgProtocol {
      *  username\r\n
      *  Server responds by sending the next reminder for that user based on the timestamp
      */
-    public static final int GET_NEXT_REMINDER = 202;
+    public static final int GET_NEXT_REMINDER = 111;
 
     /**
      * Client requests to get all the reminders they have set themselves
@@ -70,7 +70,7 @@ public class MsgProtocol {
      * username\r\n
      * Server responds by sending all the reminders set
      */
-    public static final int GET_ALL_REMINDERS = 203;
+    public static final int GET_ALL_REMINDERS = 112;
 
   /* -------------- Responses --------------- */
     /**
@@ -86,6 +86,15 @@ public class MsgProtocol {
      * content terminated by \r\n
      */
     public static final int MESSAGE = 201;
+    /**
+     * Server responds by sending one or more reminders
+     * following will be
+     * An integer specifying number of reminders terminated by \r\n
+     * Then repeated for the number of reminders are
+     * time terminated by \r\n
+     * content terminated by \r\n
+     */
+    public static final int REMINDER = 202;
     /**
      * The server sends an error message
      * Requires a one line error message terminated by \r\n
