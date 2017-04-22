@@ -28,27 +28,23 @@ public class Registration implements Command {
         String dob = in.readLine();
         String tel = in.readLine();
         String add = in.readLine();
-        String sqlInsertUser;
 
-       FileWriter fileOut = new FileWriter("TestFile1.txt", true);
-       fileOut.write(user);
-       fileOut.write(password);
-       fileOut.write(dob);
-       fileOut.write(tel);
-       fileOut.write(add);
-
-       fileOut.close();
-
-
-
-
-       if(conn.getServer().isValidUser(user) == false) {
-           sqlInsertUser =  "INSERT INTO users (user, pass, dob, tel, add) VALUES ('"+user+"','"+password+"', STR_TO_DATE('+dob+', '%Y-%m-%d'),'"+tel+"','"+add+"')";
-           conn.getServer().getDatabase().executeSQLUpdate(sqlInsertUser);
+       if(conn.getCurrentUser() == null){
+           System.out.println("TEST");
+           if(conn.getServer().isValidUser(user) == false) { // make sure the user doesn't exist
+               String sqlInsertUser =  "INSERT INTO `users` (`user`, `pass`, `dob`, `tel`, `add`) VALUES ('"+user+"','"+password+"', STR_TO_DATE('"+dob+"', '%Y-%m-%d'),'"+tel+"','"+add+"')";
+               conn.getServer().getDatabase().executeSQLUpdate(sqlInsertUser);
+               out.write("200\r\n");
+               out.flush();
+           }else{
+               (new ErrorCommand(in, out, conn, "That user already exists")).execute();
+           }
+       }
+       else{
+           (new ErrorCommand(in, out, conn, "You're already logged in, no need to register")).execute();
        }
 
-       out.write("200\r\n");
-       out.flush();
+
 
     }
 }

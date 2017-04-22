@@ -50,4 +50,5 @@ public class Reminder {
     public String getDate() {
         return date.getTime().toString();
     }
+
 }

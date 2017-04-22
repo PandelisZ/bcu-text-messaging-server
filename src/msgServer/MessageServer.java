@@ -1,6 +1,7 @@
 package msgServer;
 
 import javax.sql.rowset.CachedRowSet;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.io.IOException;
 import java.io.FileInputStream;
@@ -18,11 +19,12 @@ public class MessageServer {
     private ReminderCollection reminders;
     private Database mysqlDatabase;
     private boolean verbose;
+    private ArrayList<MsgSvrConnection> connections = new ArrayList<>();
 
     /**
      * Construct a new MessageServer
      *
-     * @param int portNumber The port number on which the server will listen.
+     // @param int portNumber The port number on which the server will listen.
      *            The default port number is 9801
      */
     public MessageServer(int portNumber) throws IOException {
@@ -67,14 +69,14 @@ public class MessageServer {
                 userMsg("MessageServer: Accepted from " +
                         clientConnection.getInetAddress());
                 // Create a new thread to handle this connection
-                MsgSvrConnection conn =
-                        new MsgSvrConnection(clientConnection, this);
+                MsgSvrConnection conn = new MsgSvrConnection(clientConnection, this);
                 // if you require some information about what is going on
                 // pass true to setVerbose.
                 // If you're tired of all those messages, pass false to turn them off
                 conn.setVerbose(true);
                 // Start the new thread
                 conn.start();
+                connections.add(conn); // Add to list of connections
                 // now loop around to await the next connection
                 // no need to wait for the thread to finish
             }
@@ -152,7 +154,7 @@ public class MessageServer {
     /**
      * Query to get the password for a specific user.
      *
-     * @param String user The username of the user whose password we want to know
+     // @param String user The username of the user whose password we want to know
      * @return String the password of this user
      */
     public String getUserPassword(String user) {
@@ -198,7 +200,7 @@ public class MessageServer {
     /**
      * Set the verbose flag
      *
-     * @param boolean verbose The new value for the verbose flag
+     // @param boolean verbose The new value for the verbose flag
      */
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;

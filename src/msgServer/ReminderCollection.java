@@ -1,5 +1,6 @@
 package msgServer;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -9,13 +10,13 @@ import java.util.Vector;
  * to retrieve messages destined for a particular user.
  */
 public class ReminderCollection {
-    private Hashtable reminders;
+    private Hashtable<String, Vector> reminders;
 
     /**
      * Construct a new empty MessageCollection
      */
     public ReminderCollection() {
-        reminders = new Hashtable();
+        reminders = new Hashtable<>();
     }
 
     /**
@@ -25,10 +26,10 @@ public class ReminderCollection {
      */
     synchronized void addReminder(Reminder reminder) {
         if (reminders.containsKey(reminder.getOwner())) {
-            Vector msgList = (Vector) reminders.get(reminder.getOwner());
+            Vector<Reminder> msgList = (Vector) reminders.get(reminder.getOwner());
             msgList.add(reminder);
         } else {
-            Vector msgList = new Vector();
+            Vector<Reminder> msgList = new Vector<>();
             msgList.add(reminder);
             reminders.put(reminder.getOwner(), msgList);
         }
@@ -42,7 +43,7 @@ public class ReminderCollection {
      * @return Message The oldest message addressed to that user
      */
     synchronized public Reminder getNextReminder(String user) {
-        Vector msgList = (Vector) reminders.get(user);
+        Vector<Reminder> msgList = (Vector) reminders.get(user);
         if (msgList != null) {
             Reminder reminder = (Reminder) msgList.firstElement();
             msgList.removeElementAt(0);
@@ -62,7 +63,7 @@ public class ReminderCollection {
      *               8 @return int The number of messages waiting for this user
      */
     synchronized public int getNumberOfReminders(String user) {
-        Vector msgList = (Vector) reminders.get(user);
+        Vector<Reminder> msgList = (Vector) reminders.get(user);
         if (msgList != null) {
             return msgList.size();
         } else {
@@ -79,11 +80,22 @@ public class ReminderCollection {
      * @return Message[] An array of messages addressed to the user
      */
     synchronized public Reminder[] getAllReminders(String user) {
-        Vector msgList = (Vector) reminders.get(user);
+        Vector<Reminder> msgList = (Vector) reminders.get(user);
         if (msgList != null) {
             reminders.remove(user);
             return ((Reminder[]) msgList.toArray(new Reminder[msgList.size()]));
         }
         return null;
+    }
+
+    synchronized public Reminder[] getAll(){
+        ArrayList<Reminder> remindersArray = new ArrayList<>();
+        for(String key : reminders.keySet()){
+            Vector<Reminder> reminderVector = reminders.get(key);
+            for(Reminder r : reminderVector){
+                remindersArray.add(r);
+            }
+        }
+        return remindersArray.toArray();
     }
 }
