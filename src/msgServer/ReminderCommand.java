@@ -26,6 +26,7 @@ public class ReminderCommand implements Command {
                     conn.getServer().getReminders().addReminder(r);
                     out.write("200\r\n");
                     out.flush();
+                    conn.getServer().updateRemindersThread();
                     return;
 
             } else {

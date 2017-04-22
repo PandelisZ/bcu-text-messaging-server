@@ -20,6 +20,7 @@ public class MessageServer {
     private Database mysqlDatabase;
     private boolean verbose;
     private ArrayList<MsgSvrConnection> connections = new ArrayList<>();
+    private ReminderTrackerThread reminderThread;
 
     /**
      * Construct a new MessageServer
@@ -39,10 +40,21 @@ public class MessageServer {
         // Set up database connection for login and everything else
         mysqlDatabase = new Database("jdbc:mysql://bcu-texting-coursework-cluster-1.cluster-cueefshnasyf.eu-west-2.rds.amazonaws.com:3306/texting-test",
                 "bcutexting", "7Bfu6sNx28U32vLtOPLQ6QI");
+
+        reminderThread = new ReminderTrackerThread(this);
+        reminderThread.start();
     }
 
     public Database getDatabase(){
         return mysqlDatabase;
+    }
+
+    public ArrayList<MsgSvrConnection> getConnections(){
+        return connections;
+    }
+
+    public void updateRemindersThread(){
+        reminderThread.updateReminders(reminders.getAll());
     }
 
     /**

@@ -2,6 +2,7 @@ package msgServer;
 
 import sun.util.calendar.Gregorian;
 
+import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 
 /**
@@ -57,7 +58,8 @@ public class Reminder {
      * @return String The date and time that the reminder was set
      */
     public String getDate() {
-        return remindTime.getTime().toString();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return format.format(remindTime.getTime());
     }
 
 }

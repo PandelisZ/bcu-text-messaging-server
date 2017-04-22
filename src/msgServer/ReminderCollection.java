@@ -35,6 +35,11 @@ public class ReminderCollection {
         }
     }
 
+    synchronized void removeReminder(Reminder reminder){
+        Vector<Reminder> userReminders = reminders.get(reminder.getOwner());
+        userReminders.remove(reminder);
+    }
+
     /**
      * Command to retrieve the oldest message waiting for a specific user.
      * The message is returned and also deleted from the collection.
@@ -88,7 +93,7 @@ public class ReminderCollection {
         return null;
     }
 
-    synchronized public Reminder[] getAll(){
+    synchronized public ArrayList<Reminder> getAll(){
         ArrayList<Reminder> remindersArray = new ArrayList<>();
         for(String key : reminders.keySet()){
             Vector<Reminder> reminderVector = reminders.get(key);
@@ -96,6 +101,6 @@ public class ReminderCollection {
                 remindersArray.add(r);
             }
         }
-        return remindersArray.toArray();
+        return remindersArray;
     }
 }

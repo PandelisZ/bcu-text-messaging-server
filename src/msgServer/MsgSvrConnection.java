@@ -74,6 +74,17 @@ public class MsgSvrConnection extends Thread {
         }
     }
 
+    public void remindCurrentUser(String reminderContents){
+        char beep = (char)7;
+        try {
+            writer.write(beep + "202\r\n");
+            writer.write(reminderContents + "\r\n");
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Query to get the main MessageServer class.
      *
