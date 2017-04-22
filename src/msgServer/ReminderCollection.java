@@ -45,7 +45,7 @@ public class ReminderCollection {
         Vector msgList = (Vector) reminders.get(user);
         if (msgList != null) {
             Reminder reminder = (Reminder) msgList.firstElement();
-            msgList.removeElementAt(0);
+            //msgList.removeElementAt(0);
             if (msgList.size() == 0) {
                 reminders.remove(user);
             }
@@ -81,7 +81,7 @@ public class ReminderCollection {
     synchronized public Reminder[] getAllReminders(String user) {
         Vector msgList = (Vector) reminders.get(user);
         if (msgList != null) {
-            reminders.remove(user);
+            //reminders.remove(user);
             return ((Reminder[]) msgList.toArray(new Reminder[msgList.size()]));
         }
         return null;

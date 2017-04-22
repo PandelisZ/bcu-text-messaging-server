@@ -1,5 +1,7 @@
 package msgServer;
 
+import sun.util.calendar.Gregorian;
+
 import java.util.GregorianCalendar;
 
 /**
@@ -9,6 +11,7 @@ public class Reminder {
     private String owner;
     private String content;
     private GregorianCalendar date;
+    private GregorianCalendar remindTime; //time at which to remind the user
 
     /**
      * Construct a new object of type Reminder.  The current date and time
@@ -17,10 +20,16 @@ public class Reminder {
      * @param String owner The username of the owner of the reminder
      * @param String content The content of the reminder
      */
-    public Reminder(String owner, String content) {
+    public Reminder(String owner, String content, String secondsToReminder) {
         this.owner = owner;
         this.content = content;
         this.date = new GregorianCalendar();
+
+        int seconds = Integer.valueOf(secondsToReminder);
+
+        this.remindTime = new GregorianCalendar();
+
+        this.remindTime.add(GregorianCalendar.SECOND, seconds);
     }
 
     /**
@@ -48,6 +57,6 @@ public class Reminder {
      * @return String The date and time that the reminder was set
      */
     public String getDate() {
-        return date.getTime().toString();
+        return remindTime.getTime().toString();
     }
 }
