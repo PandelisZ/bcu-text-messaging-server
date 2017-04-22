@@ -52,13 +52,14 @@ public class UpdateUser implements Command{
              */
             sqlUpdateUser =  "UPDATE `users` SET `pass` = '"+ password + "', `dob` = STR_TO_DATE("+dob+", '%Y-%m-%d')"+ ", `tel` = '"+ tel +"', `add` = '"+add+"' WHERE `user` = '"+user+"';";
             conn.getServer().getDatabase().executeSQLUpdate(sqlUpdateUser);
+            out.write("200\r\n");
         }else{
             (new ErrorCommand(in, out, conn, "You are not the user logged on")).execute();
         }
 
 
 
-        out.write("200\r\n");
+
         out.flush();
 
     }
