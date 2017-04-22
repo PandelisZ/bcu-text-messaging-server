@@ -39,7 +39,7 @@ public class MsgProtocol {
      * Client requests to get all messages
      * Following lines are:
      * username\r\n
-     * Server reponds by sending all messages for that user
+     * Server responds by sending all messages for that user
      */
     public static final int GET_ALL_MESSAGES = 106;
 
@@ -47,13 +47,38 @@ public class MsgProtocol {
     public static final int REGISTRATION = 107;
 
     public static final int UPDATEUSER = 108;
+
+    /**
+     *  Client requests to set a new reminder
+     *  Following lines are:
+     *  username\r\n
+     *  reminder\r\n
+     */
+    public static final int SET_REMINDER = 110;
+
+    /**
+     *  Client requests to get the next set reminder
+     *  Following lines are
+     *  username\r\n
+     *  Server responds by sending the next reminder for that user based on the timestamp
+     */
+    public static final int GET_NEXT_REMINDER = 111;
+
+    /**
+     * Client requests to get all the reminders they have set themselves
+     * Following lines are
+     * username\r\n
+     * Server responds by sending all the reminders set
+     */
+    public static final int GET_ALL_REMINDERS = 112;
+
   /* -------------- Responses --------------- */
     /**
-     * Server reponds OK
+     * Server responds OK
      */
     public static final int OK = 200;
     /**
-     * Server reponds by sending one or more messages
+     * Server responds by sending one or more messages
      * following will be
      * An integer specifying number of messages terminated by \r\n
      * Then repeated for the number of messages are
@@ -61,6 +86,15 @@ public class MsgProtocol {
      * content terminated by \r\n
      */
     public static final int MESSAGE = 201;
+    /**
+     * Server responds by sending one or more reminders
+     * following will be
+     * An integer specifying number of reminders terminated by \r\n
+     * Then repeated for the number of reminders are
+     * time terminated by \r\n
+     * content terminated by \r\n
+     */
+    public static final int REMINDER = 202;
     /**
      * The server sends an error message
      * Requires a one line error message terminated by \r\n

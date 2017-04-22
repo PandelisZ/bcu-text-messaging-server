@@ -15,6 +15,7 @@ public class MessageServer {
     public static final int DEFAULT_PORT = 9801;
     private int port;
     private MessageCollection messages;
+    private ReminderCollection reminders;
     private Database mysqlDatabase;
     private boolean verbose;
 
@@ -31,6 +32,8 @@ public class MessageServer {
         FileInputStream fin = null;
         // Construct a new (empty) MessageCollection
         messages = new MessageCollection();
+        // Construct a new (empty) ReminderCollection
+        reminders = new ReminderCollection();
         // Set up database connection for login and everything else
         mysqlDatabase = new Database("jdbc:mysql://bcu-texting-coursework-cluster-1.cluster-cueefshnasyf.eu-west-2.rds.amazonaws.com:3306/texting-test",
                 "bcutexting", "7Bfu6sNx28U32vLtOPLQ6QI");
@@ -134,6 +137,16 @@ public class MessageServer {
      */
     public MessageCollection getMessages() {
         return messages;
+    }
+
+    /**
+     * Query to obtain the reminders collection from the server.
+     *
+     * @return MessageCollection The collection of reminders that are
+     * waiting to be delivered to the users.
+     */
+    public ReminderCollection getReminders() {
+        return reminders;
     }
 
     /**
