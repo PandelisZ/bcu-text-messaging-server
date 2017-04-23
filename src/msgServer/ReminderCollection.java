@@ -159,7 +159,7 @@ public class ReminderCollection {
         Vector<Reminder> msgList = (Vector) reminders.get(user);
         if (msgList != null && !msgList.isEmpty()) {
             //reminders.remove(user);
-            return ((Reminder[]) msgList.toArray(new Reminder[msgList.size()]));
+            return msgList.toArray(new Reminder[msgList.size()]);
         }
         return null;
     }
