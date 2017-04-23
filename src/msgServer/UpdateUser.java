@@ -50,7 +50,7 @@ public class UpdateUser implements Command{
              *@param sqlUpdateUser sets the SQL statement to update the users details
              *@param conn.getServer().getDatabase.executeSQLUpdate(sqlUpdateUser) sends command to server.
              */
-            sqlUpdateUser =  "UPDATE `users` SET `pass` = '"+ password + "', `dob` = STR_TO_DATE("+dob+", '%Y-%m-%d')"+ ", `tel` = '"+ tel +"', `add` = '"+add+"' WHERE `user` = '"+user+"';";
+            sqlUpdateUser =  "UPDATE `users` SET `pass` = '"+ password + "', `dob` = STR_TO_DATE('"+dob+"', '%Y-%m-%d')"+ ", `tel` = '"+ tel +"', `add` = '"+add+"' WHERE `user` = '"+user+"';";
             conn.getServer().getDatabase().executeSQLUpdate(sqlUpdateUser);
             out.write("200\r\n");
             out.flush();
