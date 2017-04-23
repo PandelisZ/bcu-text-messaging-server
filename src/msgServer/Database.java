@@ -8,9 +8,6 @@ import java.sql.*;
  */
 public class Database {
 
-    //final String dbURI = "jdbc:mysql://bcu-texting-coursework-cluster-1.cluster-cueefshnasyf.eu-west-2.rds.amazonaws.com:3306/texting-test";
-    //final String dbUser = "testing";
-    //final String dbPass = "ry0RJN7aYL1Q5EB9dmEQpb0";
 
     private final String dbURI;
     private final String dbUser;
