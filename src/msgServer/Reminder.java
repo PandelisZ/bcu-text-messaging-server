@@ -31,8 +31,8 @@ public class Reminder {
 
         this.id = -1;
 
+        int seconds = Integer.valueOf(secondsToReminder);
 
-        int seconds = Integer.parseInt(secondsToReminder);
 
         this.remindTime = new GregorianCalendar();
 

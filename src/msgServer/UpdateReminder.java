@@ -18,10 +18,11 @@ public class UpdateReminder implements Command {
     }
 
     public void execute() throws IOException {
+        String owner = in.readLine();
         String id = in.readLine();
         String content = in.readLine();
         String seconds = in.readLine();
-        if (conn.getCurrentUser() != null ){
+        if (conn.getCurrentUser() != null && owner.equals(conn.getCurrentUser()) ){
             if (content != null && seconds != null && id != null) {
 
 
