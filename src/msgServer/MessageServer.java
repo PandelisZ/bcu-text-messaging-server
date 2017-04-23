@@ -1,6 +1,7 @@
 package msgServer;
 
 import javax.sql.rowset.CachedRowSet;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.io.IOException;
 import java.io.FileInputStream;
@@ -18,11 +19,13 @@ public class MessageServer {
     private ReminderCollection reminders;
     private Database mysqlDatabase;
     private boolean verbose;
+    private ArrayList<MsgSvrConnection> connections = new ArrayList<>();
+    private ReminderTrackerThread reminderThread;
 
     /**
      * Construct a new MessageServer
      *
-     * @param int portNumber The port number on which the server will listen.
+     // @param int portNumber The port number on which the server will listen.
      *            The default port number is 9801
      */
     public MessageServer(int portNumber) throws IOException {
@@ -37,10 +40,21 @@ public class MessageServer {
         // Set up database connection for login and everything else
         mysqlDatabase = new Database("jdbc:mysql://bcu-texting-coursework-cluster-1.cluster-cueefshnasyf.eu-west-2.rds.amazonaws.com:3306/texting-test",
                 "bcutexting", "7Bfu6sNx28U32vLtOPLQ6QI");
+
+        reminderThread = new ReminderTrackerThread(this);
+        reminderThread.start();
     }
 
     public Database getDatabase(){
         return mysqlDatabase;
+    }
+
+    public ArrayList<MsgSvrConnection> getConnections(){
+        return connections;
+    }
+
+    public void updateRemindersThread(){
+        reminderThread.updateReminders(reminders.getAll());
     }
 
     /**
@@ -67,14 +81,14 @@ public class MessageServer {
                 userMsg("MessageServer: Accepted from " +
                         clientConnection.getInetAddress());
                 // Create a new thread to handle this connection
-                MsgSvrConnection conn =
-                        new MsgSvrConnection(clientConnection, this);
+                MsgSvrConnection conn = new MsgSvrConnection(clientConnection, this);
                 // if you require some information about what is going on
                 // pass true to setVerbose.
                 // If you're tired of all those messages, pass false to turn them off
                 conn.setVerbose(true);
                 // Start the new thread
                 conn.start();
+                connections.add(conn); // Add to list of connections
                 // now loop around to await the next connection
                 // no need to wait for the thread to finish
             }
@@ -152,7 +166,7 @@ public class MessageServer {
     /**
      * Query to get the password for a specific user.
      *
-     * @param String user The username of the user whose password we want to know
+     // @param String user The username of the user whose password we want to know
      * @return String the password of this user
      */
     public String getUserPassword(String user) {
@@ -198,7 +212,7 @@ public class MessageServer {
     /**
      * Set the verbose flag
      *
-     * @param boolean verbose The new value for the verbose flag
+     // @param boolean verbose The new value for the verbose flag
      */
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
