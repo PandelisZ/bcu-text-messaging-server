@@ -36,8 +36,8 @@ public class ReminderTrackerThread extends Thread {
                     e.printStackTrace();
                 }
 
-                // Compare dates
                 if(reminderDate != null) {
+                    // Compare dates
                     if (currentDate.compareTo(reminderDate) >= 0) {
                         // need to find user and message them
                         String reminderUser = r.getOwner();
