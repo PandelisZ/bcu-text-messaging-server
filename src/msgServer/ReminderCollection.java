@@ -10,15 +10,15 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 /**
- * Class to model a collection of messages.  The username of the recipient
- * is the key that is used to store each message.  Therefore it is easy
- * to retrieve messages destined for a particular user.
+ * Class to model a collection of Reminder.  The username of the owner
+ * is the key that is used to store each reminder.  Therefore it is easy
+ * to retrieve reminders set by a particular user.
  */
 public class ReminderCollection {
     private Hashtable<String, Vector> reminders;
     private MessageServer server;
     /**
-     * Construct a new empty MessageCollection
+     * Construct a new empty Reminder Collection
      */
     public ReminderCollection(MessageServer server){
         this.reminders = new Hashtable<>();
@@ -26,6 +26,7 @@ public class ReminderCollection {
 
         // Check database and load reminders
         Database db = server.getDatabase();
+        //SQL query for retrieving previously set reminders for a user
         ResultSet rs = db.executeSQLQuery("SELECT `user`, `content`, `remindertime` FROM `reminders`");
         boolean setEmpty = true;
         try {
@@ -67,9 +68,9 @@ public class ReminderCollection {
     }
 
     /**
-     * Command to add a new message to the collection
+     * Command to add a new reminder to the collection
      *
-     * @param Reminder reminder is the message to be added
+     * @param Reminder reminder is the reminder to be added
      */
     synchronized void addReminder(Reminder reminder, Database db) {
         if (reminders.containsKey(reminder.getOwner())) {
@@ -103,9 +104,10 @@ public class ReminderCollection {
     }
 
     /**
-     * Command to add a new message to the collection
+     * Command to update a reminder already in the collection
      *
-     * @param Reminder reminder is the message to be added
+     * @param int id The id of the reminder to be updated
+     * @param Reminder reminder is the new reminder content to overwrite the old
      */
     synchronized void updateReminder(int id, Reminder updatedReminder) {
         if (reminders.containsKey(updatedReminder.getOwner())) {
@@ -119,11 +121,10 @@ public class ReminderCollection {
     }
 
     /**
-     * Command to retrieve the oldest message waiting for a specific user.
-     * The message is returned and also deleted from the collection.
+     * Command to retrieve the last set reminder
      *
-     * @param String user is the user who the message is addressed to
-     * @return Message The oldest message addressed to that user
+     * @param String user is the user who assigned the reminder
+     * @return Reminder The last set reminder
      */
     synchronized public Reminder getNextReminder(String user) {
         Vector<Reminder> msgList = (Vector) reminders.get(user);
@@ -140,27 +141,10 @@ public class ReminderCollection {
     }
 
     /**
-     * Query to retrieve the number of messages waiting for a specific user.
+     * Command to retrieve all the reminders that a user has set for himself
      *
-     * @param String user is the user whose messages we are asking about
-     *               8 @return int The number of messages waiting for this user
-     */
-    synchronized public int getNumberOfReminders(String user) {
-        Vector<Reminder> msgList = (Vector) reminders.get(user);
-        if (msgList != null) {
-            return msgList.size();
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Command to retrieve all the messages waiting for a specific user.
-     * The messages are deleted from the collection and
-     * returned in an array of Messages.
-     *
-     * @param String user is the user who the messages are addressed to
-     * @return Message[] An array of messages addressed to the user
+     * @param String user Is the owner of the reminders
+     * @return Reminder[] An array of reminders set by the user
      */
     synchronized public Reminder[] getAllReminders(String user) {
         Vector<Reminder> msgList = (Vector) reminders.get(user);
@@ -172,7 +156,7 @@ public class ReminderCollection {
     }
 
     /**
-     *
+     * Command to retrieve all reminders across all users
      * @return returns an ArrayList of ALL reminders from ALL users
      */
     synchronized public ArrayList<Reminder> getAll(){

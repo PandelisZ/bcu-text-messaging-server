@@ -31,7 +31,7 @@ public class GetAllMsgsCommand implements Command {
                 out.write("201" + "\r\n");
                 //write the length of the messages returned
                 out.write(msgs.length + "\r\n");
-                //Loop through the messages and write the sender, date and cotent to the outputstream (use provided methods)
+                //Loop through the messages and write the sender, date and content to the outputstream (use provided methods)
                 for (Message m : msgs){
                     out.write(m.getSender() + "\r\n");
                     out.write(m.getDate() + "\r\n");

@@ -53,12 +53,6 @@ public class CommandFactory {
                 case MsgProtocol.UPDATE_REMINDER: //113
                     return new UpdateReminder(in, out, serverConn);
 
-
-        /*
-	     * Add more case statements below this comment to process 
-	     * the other commands
-	     */
-         
 	    /*
 	     * Don't add anything below this line
 	     */

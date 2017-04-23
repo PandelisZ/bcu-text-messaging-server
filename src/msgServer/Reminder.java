@@ -18,31 +18,30 @@ public class Reminder {
 
 
     /**
-     * Construct a new object of type Reminder.  The current date and time
-     * is stored in the message.
+     * Creates a Reminder object which will store the
+     * alert time of the reminder as well as the content, owner and id
      *
-     * @param String owner The username of the owner of the reminder
-     * @param String content The content of the reminder
+     * @param owner String The owner of the reminder
+     * @param content String The text contained in the reminder
+     * @param secondsToReminder String The time in seconds to the desired alert
      */
     public Reminder(String owner, String content, String secondsToReminder) {
         this.owner = owner;
         this.content = content;
         this.date = new GregorianCalendar();
 
-        this.id = -1;
+        this.id = -1; // for any new reminders that are yet to be added to the hashtable
 
+        //format the time for the remindTime
         int seconds = Integer.valueOf(secondsToReminder);
-
-
         this.remindTime = new GregorianCalendar();
-
         this.remindTime.add(GregorianCalendar.SECOND, seconds);
     }
 
     /**
-     * Query to obtain the content of this message.
+     * Getter for the content of a reminder
      *
-     * @return String The content of this message
+     * @return String The content of this reminder
      */
     public String getContent() {
         return content;
@@ -50,40 +49,35 @@ public class Reminder {
 
 
     /**
-     * Query to obtain the username of the sender of this message
+     * Getter for the owner of a reminder
      *
-     * @return String The username of the sender of the message
+     * @return String The username of the owner of the reminder
      */
     public String getOwner() {
         return owner;
     }
 
     /**
-     * Query to obtain the date and time this reminder was set
-     *
-     * @return String The date and time that the reminder was set
+     * Setter for the id of a reminder
+     * @param int id
      */
-//    public String getDate() {
-//        return remindTime.getTime().toString();
-//    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public void updateTime(String secondsToReminder) {
-        this.remindTime = new GregorianCalendar();
-
-        int seconds = Integer.valueOf(secondsToReminder);
-        this.remindTime.add(GregorianCalendar.SECOND, seconds);
-    }
-
-    public void setId(int id){
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getId() {return Integer.toString(id); }
+    /**
+     * Getter for the id of a reminder
+     * @return int id
+     */
+    public String getId() {
+        return Integer.toString(id);
+    }
 
+    /**
+     * Getter for the alert time of a reminder.
+     * Alert time is the time that the user has requested they be reminded
+     * @return String alertTime
+     */
     public String getDate() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(remindTime.getTime());
