@@ -18,12 +18,13 @@ public class ReminderCommand implements Command {
     }
 
     public void execute() throws IOException {
+        String owner = in.readLine();
         String content = in.readLine();
         String seconds = in.readLine();
-        if (conn.getCurrentUser() != null && seconds != null){
+        if (owner.equals(conn.getCurrentUser()) && seconds != null){
             if (content != null) {
                 try {
-                    Reminder r = new Reminder(conn.getCurrentUser(), content, seconds);
+                    Reminder r = new Reminder(owner, content, seconds);
                     conn.getServer().getReminders().addReminder(r, conn.getServer().getDatabase());
                     out.write("200\r\n");
                     out.flush();
