@@ -33,6 +33,8 @@ public class GetAllRemindersCommand implements Command {
                 out.write(r.length + "\r\n");
                 //Loop through the messages and write the sender, date and cotent to the outputstream (use provided methods)
                 for (Reminder rem : r){
+
+                    out.write(rem.getId() + "\r\n");
                     out.write(rem.getDate() + "\r\n");
                     out.write(rem.getContent() + "\r\n");
                 }
