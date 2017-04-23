@@ -29,6 +29,7 @@ public class UpdateUser implements Command{
          * @param user the users name that is currently logged in
          *
          */
+
         String user = in.readLine();
         String password = null;
         String dob = null;
@@ -45,13 +46,22 @@ public class UpdateUser implements Command{
             dob = in.readLine();
             tel = in.readLine();
             add = in.readLine();
-
+            /**
+             *@param sqlUpdateUser sets the SQL statement to update the users details
+             *@param conn.getServer().getDatabase.executeSQLUpdate(sqlUpdateUser) sends command to server.
+             */
+            sqlUpdateUser =  "UPDATE `users` SET `pass` = '"+ password + "', `dob` = STR_TO_DATE("+dob+", '%Y-%m-%d')"+ ", `tel` = '"+ tel +"', `add` = '"+add+"' WHERE `user` = '"+user+"';";
+            conn.getServer().getDatabase().executeSQLUpdate(sqlUpdateUser);
+            out.write("200\r\n");
+            out.flush();
+        }else{
+            (new ErrorCommand(in, out, conn, "You are not the user logged on")).execute();
         }
-        sqlUpdateUser =  "UPDATE `users` SET `pass` = '"+ password + "', `dob` = STR_TO_DATE("+dob+", '%Y-%m-%d')"+ ", `tel` = '"+ tel +"', `add` = '"+add+"' WHERE `user` = '"+user+"';";
 
-        conn.getServer().getDatabase().executeSQLUpdate(sqlUpdateUser);
-        out.write("200\r\n");
-        out.flush();
+
+
+
+
 
     }
 
