@@ -50,6 +50,8 @@ public class CommandFactory {
                     return new GetReminderCommand(in, out, serverConn);
                 case MsgProtocol.GET_ALL_REMINDERS: //112
                     return new GetAllRemindersCommand(in, out, serverConn);
+                case MsgProtocol.UPDATE_REMINDER: //113
+                    return new UpdateReminder(in, out, serverConn);
 
 
         /*

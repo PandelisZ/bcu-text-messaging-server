@@ -72,6 +72,8 @@ public class MsgProtocol {
      */
     public static final int GET_ALL_REMINDERS = 112;
 
+    public static final int UPDATE_REMINDER = 113;
+
   /* -------------- Responses --------------- */
     /**
      * Server responds OK
