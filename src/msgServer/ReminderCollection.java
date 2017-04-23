@@ -24,12 +24,14 @@ public class ReminderCollection {
      *
      * @param Reminder reminder is the message to be added
      */
-    synchronized void addReminder(Reminder reminder) {
+    synchronized void addReminder(Reminder reminder, Database db) {
         if (reminders.containsKey(reminder.getOwner())) {
             Vector<Reminder> msgList = (Vector) reminders.get(reminder.getOwner());
+            reminder.setId(msgList.size());
             msgList.add(reminder);
         } else {
             Vector<Reminder> msgList = new Vector<>();
+            reminder.setId(msgList.size());
             msgList.add(reminder);
             reminders.put(reminder.getOwner(), msgList);
         }
@@ -38,6 +40,19 @@ public class ReminderCollection {
     synchronized void removeReminder(Reminder reminder){
         Vector<Reminder> userReminders = reminders.get(reminder.getOwner());
         userReminders.remove(reminder);
+    }
+
+    /**
+     * Command to add a new message to the collection
+     *
+     * @param Reminder reminder is the message to be added
+     */
+    synchronized void updateReminder(int id, Reminder updatedReminder) {
+        if (reminders.containsKey(updatedReminder.getOwner())) {
+            Vector<Reminder> msgList = (Vector) reminders.get(updatedReminder.getOwner());
+            updatedReminder.setId(id);
+            msgList.set(id, updatedReminder);
+        }
     }
 
     /**
@@ -50,7 +65,7 @@ public class ReminderCollection {
     synchronized public Reminder getNextReminder(String user) {
         Vector<Reminder> msgList = (Vector) reminders.get(user);
         if (msgList != null) {
-            Reminder reminder = (Reminder) msgList.firstElement();
+            Reminder reminder = (Reminder) msgList.lastElement(); //last element as if its a stack;
             //msgList.removeElementAt(0);
             if (msgList.size() == 0) {
                 reminders.remove(user);

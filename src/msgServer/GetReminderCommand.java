@@ -23,6 +23,7 @@ public class GetReminderCommand implements Command {
             if ((r = conn.getServer().getReminders().getNextReminder(user)) != null) {
                 out.write("" + MsgProtocol.REMINDER + "\r\n");
                 out.write("" + 1 + "\r\n");
+                out.write(r.getId() + "\r\n");
                 out.write(r.getDate() + "\r\n");
                 out.write(r.getContent() + "\r\n");
                 out.flush();
