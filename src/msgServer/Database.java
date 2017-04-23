@@ -14,7 +14,7 @@ public class Database {
     private Connection conn = null;
 
     /**
-     * loaded driver into the memory, so it can be utilized as an implementation of the JDBC interfaces.
+     * loaded driver into the memory, so it can be utilised as an implementation of the JDBC interfaces.
      */
 
     public Database(String URI, String username, String password){
