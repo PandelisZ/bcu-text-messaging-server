@@ -1,6 +1,11 @@
 package msgServer;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -11,12 +16,52 @@ import java.util.Vector;
  */
 public class ReminderCollection {
     private Hashtable<String, Vector> reminders;
-
+    private MessageServer server;
     /**
      * Construct a new empty MessageCollection
      */
-    public ReminderCollection() {
-        reminders = new Hashtable<>();
+    public ReminderCollection(MessageServer server){
+        this.reminders = new Hashtable<>();
+        this.server = server;
+
+        // Check database and load reminders
+        Database db = server.getDatabase();
+        ResultSet rs = db.executeSQLQuery("SELECT `user`, `content`, `remindertime` FROM `reminders`");
+        boolean setEmpty = true;
+        try {
+            while(rs.next()){
+                setEmpty = false;
+                String user = rs.getString("user");
+                String content = rs.getString("content");
+                String date = rs.getString("remindertime");
+                System.out.println("Loaded: ");
+                System.out.println(user + "\n" + content + "\n" + date);
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date reminderDate = format.parse(date);
+                Date currentDate = new Date();
+                int secondsDifference = (int)((reminderDate.getTime() - currentDate.getTime())/1000)+1;
+                if(reminders.containsKey(user)){
+                    Vector<Reminder> usersReminders = reminders.get(user);
+                    Reminder reminder = new Reminder(user, content, Integer.toString(secondsDifference) );
+                    reminder.setId(usersReminders.size());
+                    usersReminders.add(reminder);
+                }else{
+                    Vector<Reminder> userReminders = new Vector<>();
+                    Reminder reminder = new Reminder(user, content, Long.toString(secondsDifference));
+                    reminder.setId(userReminders.size());
+                    userReminders.add(reminder);
+                    reminders.put(reminder.getOwner(), userReminders);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if(!setEmpty){
+            System.out.println("Loaded reminders from database");
+        }
     }
 
     /**
@@ -35,11 +80,19 @@ public class ReminderCollection {
             msgList.add(reminder);
             reminders.put(reminder.getOwner(), msgList);
         }
+        // Add reminder to database
+        db.executeSQLUpdate("INSERT INTO `reminders` (`user`, `content`, `remindertime`) VALUES ('"
+                    + reminder.getOwner() + "', '" + reminder.getContent() + "', '" + reminder.getDate() + "')");
     }
 
-    synchronized void removeReminder(Reminder reminder){
+    synchronized void removeReminder(Reminder reminder, Database db){
         Vector<Reminder> userReminders = reminders.get(reminder.getOwner());
         userReminders.remove(reminder);
+
+        // remove reminder from database
+        String sql = "DELETE FROM `reminders` WHERE `user`='"
+                + reminder.getOwner() + "' AND `content`='" + reminder.getContent() + "' AND `remindertime`<='" + reminder.getDate() + "'";
+        db.executeSQLUpdate(sql);
     }
 
     /**
@@ -50,6 +103,9 @@ public class ReminderCollection {
     synchronized void updateReminder(int id, Reminder updatedReminder) {
         if (reminders.containsKey(updatedReminder.getOwner())) {
             Vector<Reminder> msgList = (Vector) reminders.get(updatedReminder.getOwner());
+            Reminder oldReminder = msgList.elementAt(id);
+            server.getDatabase().executeSQLUpdate("UPDATE `reminders` SET `content`='" + updatedReminder.getContent() + "', `remindertime`='" + updatedReminder.getDate() + "' WHERE " +
+                    "`user`='" + oldReminder.getOwner() + "' AND `content`='" + oldReminder.getContent() + "' AND `remindertime`='" + oldReminder.getDate() + "'");
             updatedReminder.setId(id);
             msgList.set(id, updatedReminder);
         }
@@ -64,7 +120,7 @@ public class ReminderCollection {
      */
     synchronized public Reminder getNextReminder(String user) {
         Vector<Reminder> msgList = (Vector) reminders.get(user);
-        if (msgList != null) {
+        if (msgList != null && !msgList.isEmpty()) {
             Reminder reminder = (Reminder) msgList.lastElement(); //last element as if its a stack;
             //msgList.removeElementAt(0);
             if (msgList.size() == 0) {
@@ -101,7 +157,7 @@ public class ReminderCollection {
      */
     synchronized public Reminder[] getAllReminders(String user) {
         Vector<Reminder> msgList = (Vector) reminders.get(user);
-        if (msgList != null) {
+        if (msgList != null && !msgList.isEmpty()) {
             //reminders.remove(user);
             return ((Reminder[]) msgList.toArray(new Reminder[msgList.size()]));
         }

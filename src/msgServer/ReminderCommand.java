@@ -22,13 +22,16 @@ public class ReminderCommand implements Command {
         String seconds = in.readLine();
         if (conn.getCurrentUser() != null && seconds != null){
             if (content != null) {
-                Reminder r = new Reminder(conn.getCurrentUser(), content, seconds);
+                try {
+                    Reminder r = new Reminder(conn.getCurrentUser(), content, seconds);
                     conn.getServer().getReminders().addReminder(r, conn.getServer().getDatabase());
                     out.write("200\r\n");
                     out.flush();
                     conn.getServer().updateRemindersThread();
                     return;
-
+                }catch(NumberFormatException e){
+                    (new ErrorCommand(in, out, conn, "Please use a number for the time")).execute();
+                }
             } else {
                 (new ErrorCommand(in, out, conn, "Error trying to set reminder")).execute();
             }

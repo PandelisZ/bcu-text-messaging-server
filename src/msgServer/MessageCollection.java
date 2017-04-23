@@ -43,7 +43,7 @@ public class MessageCollection {
      */
     synchronized public Message getNextMessage(String user) {
         Vector msgList = (Vector) messages.get(user);
-        if (msgList != null) {
+        if (msgList != null && !msgList.isEmpty()) {
             Message message = (Message) msgList.firstElement();
             msgList.removeElementAt(0);
             if (msgList.size() == 0) {

@@ -44,12 +44,12 @@ public class ReminderTrackerThread extends Thread {
                         // Connected users
                         ArrayList<MsgSvrConnection> connections = server.getConnections();
                         for(MsgSvrConnection conn : connections) {
-                            if (conn.getCurrentUser().equals(reminderUser)) {
+                            if (conn.getCurrentUser() != null && conn.getCurrentUser().equals(reminderUser)) {
                                 conn.remindCurrentUser(r.getContent());
                             }
                         }
                         iter.remove();
-                        server.getReminders().removeReminder(r);
+                        server.getReminders().removeReminder(r, server.getDatabase());
                     }
                 }
             }

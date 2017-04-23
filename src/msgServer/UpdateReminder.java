@@ -25,10 +25,11 @@ public class UpdateReminder implements Command {
             if (content != null && seconds != null && id != null) {
 
 
+                try{
                 Reminder r = new Reminder(conn.getCurrentUser(), content, seconds);
 
-                try{
                     conn.getServer().getReminders().updateReminder(Integer.parseInt(id), r);
+                    conn.getServer().updateRemindersThread();
                     out.write("200\r\n");
                     out.flush();
                     return;

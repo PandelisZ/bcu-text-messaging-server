@@ -36,10 +36,11 @@ public class MessageServer {
         // Construct a new (empty) MessageCollection
         messages = new MessageCollection();
         // Construct a new (empty) ReminderCollection
-        reminders = new ReminderCollection();
         // Set up database connection for login and everything else
         mysqlDatabase = new Database("jdbc:mysql://bcu-texting-coursework-cluster-1.cluster-cueefshnasyf.eu-west-2.rds.amazonaws.com:3306/texting-test",
                 "bcutexting", "7Bfu6sNx28U32vLtOPLQ6QI");
+
+        reminders = new ReminderCollection(this);
 
         reminderThread = new ReminderTrackerThread(this);
         reminderThread.start();

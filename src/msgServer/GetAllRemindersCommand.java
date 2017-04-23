@@ -41,7 +41,7 @@ public class GetAllRemindersCommand implements Command {
                 //Flush the outputstream
                 out.flush();
             }else{
-                (new ErrorCommand(in, out, conn, "No messages")).execute();
+                (new ErrorCommand(in, out, conn, "No reminders")).execute();
             }
         }else{
             (new ErrorCommand(in, out, conn, "You are not logged on")).execute();

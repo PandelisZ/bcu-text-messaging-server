@@ -69,6 +69,7 @@ public class MsgSvrConnection extends Thread {
             try {
                 userMsg("MsgSvrConnection: Closing this connection");
                 socket.close();
+                server.getConnections().remove(this);
             } catch (IOException e) {
             }
         }
@@ -77,7 +78,7 @@ public class MsgSvrConnection extends Thread {
     public void remindCurrentUser(String reminderContents){
         char beep = (char)7;
         try {
-            writer.write(beep + beep + beep + "202\r\n");
+            writer.write(beep + "202\r\n");
             writer.write(reminderContents + "\r\n");
             writer.flush();
         } catch (IOException e) {
