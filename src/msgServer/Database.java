@@ -8,10 +8,6 @@ import java.sql.*;
  */
 public class Database {
 
-    //final String dbURI = "jdbc:mysql://bcu-texting-coursework-cluster-1.cluster-cueefshnasyf.eu-west-2.rds.amazonaws.com:3306/texting-test";
-    //final String dbUser = "testing";
-    //final String dbPass = "ry0RJN7aYL1Q5EB9dmEQpb0";
-
     private final String dbURI;
     private final String dbUser;
     private final String dbPass;
@@ -34,6 +30,12 @@ public class Database {
         }
     }
 
+    /**
+     * For querying server only. Can not ALTER data
+     * @param sql the SQL query to send
+     * @return returns a ResultSet containing all the returned data
+     */
+
     public ResultSet executeSQLQuery(String sql){
         Connection conn = getConnection();
         try {
@@ -46,6 +48,10 @@ public class Database {
         return null;
     }
 
+    /**
+     * For altering data only
+     * @param sql The SQL query
+     */
     public void executeSQLUpdate(String sql){
         Connection conn = getConnection();
         try {
@@ -56,6 +62,10 @@ public class Database {
         }
     }
 
+    /**
+     *
+     * @return the connection object for the database
+     */
     public Connection getConnection() {
         try {
             conn = DriverManager.getConnection(dbURI, dbUser, dbPass);

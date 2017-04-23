@@ -75,8 +75,12 @@ public class MsgSvrConnection extends Thread {
         }
     }
 
+    /**
+     *
+     * @param reminderContents the message which the user needs to be reminded about
+     */
     public void remindCurrentUser(String reminderContents){
-        char beep = (char)7;
+        char beep = (char)7; // ASCII code for beep
         try {
             writer.write(beep + "202\r\n");
             writer.write(reminderContents + "\r\n");

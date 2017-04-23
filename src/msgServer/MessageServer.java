@@ -50,10 +50,17 @@ public class MessageServer {
         return mysqlDatabase;
     }
 
+    /**
+     *
+     * @return an ArrayList of connections
+     */
     public ArrayList<MsgSvrConnection> getConnections(){
         return connections;
     }
 
+    /**
+     * Will update the ReminderTrackerThread with reminders
+     */
     public void updateRemindersThread(){
         reminderThread.updateReminders(reminders.getAll());
     }

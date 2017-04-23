@@ -48,7 +48,9 @@ public class ReminderTrackerThread extends Thread {
                                 conn.remindCurrentUser(r.getContent());
                             }
                         }
+                        // Remove from object local reminders
                         iter.remove();
+                        // Remove from server/database reminders
                         server.getReminders().removeReminder(r, server.getDatabase());
                     }
                 }

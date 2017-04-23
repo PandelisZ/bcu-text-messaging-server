@@ -34,18 +34,20 @@ public class ReminderCollection {
                 String user = rs.getString("user");
                 String content = rs.getString("content");
                 String date = rs.getString("remindertime");
-                System.out.println("Loaded: ");
-                System.out.println(user + "\n" + content + "\n" + date);
+
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date reminderDate = format.parse(date);
                 Date currentDate = new Date();
+                // Need to add 1 second here because of some sort of precision error or glitch which meant I was getting a time which was 1 second before
                 int secondsDifference = (int)((reminderDate.getTime() - currentDate.getTime())/1000)+1;
+                // If there's already and entry for the user
                 if(reminders.containsKey(user)){
                     Vector<Reminder> usersReminders = reminders.get(user);
                     Reminder reminder = new Reminder(user, content, Integer.toString(secondsDifference) );
                     reminder.setId(usersReminders.size());
                     usersReminders.add(reminder);
                 }else{
+                    // To create new entry
                     Vector<Reminder> userReminders = new Vector<>();
                     Reminder reminder = new Reminder(user, content, Long.toString(secondsDifference));
                     reminder.setId(userReminders.size());
@@ -85,6 +87,11 @@ public class ReminderCollection {
                     + reminder.getOwner() + "', '" + reminder.getContent() + "', '" + reminder.getDate() + "')");
     }
 
+    /**
+     *
+     * @param reminder the reminder which is to be deleted
+     * @param db a reference to the database object to allow communcation
+     */
     synchronized void removeReminder(Reminder reminder, Database db){
         Vector<Reminder> userReminders = reminders.get(reminder.getOwner());
         userReminders.remove(reminder);
@@ -121,7 +128,7 @@ public class ReminderCollection {
     synchronized public Reminder getNextReminder(String user) {
         Vector<Reminder> msgList = (Vector) reminders.get(user);
         if (msgList != null && !msgList.isEmpty()) {
-            Reminder reminder = (Reminder) msgList.lastElement(); //last element as if its a stack;
+            Reminder reminder = msgList.lastElement(); //last element as if its a stack;
             //msgList.removeElementAt(0);
             if (msgList.size() == 0) {
                 reminders.remove(user);
@@ -164,6 +171,10 @@ public class ReminderCollection {
         return null;
     }
 
+    /**
+     *
+     * @return returns an ArrayList of ALL reminders from ALL users
+     */
     synchronized public ArrayList<Reminder> getAll(){
         ArrayList<Reminder> remindersArray = new ArrayList<>();
         for(String key : reminders.keySet()){
